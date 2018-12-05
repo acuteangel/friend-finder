@@ -333,11 +333,6 @@
             scores: scores
         };
 
-
-        $.post("/api/data", newFriend).then(function(data) {
-            console.log("survey.html", data);
-        });
-
         $.get("/api/data", function(data){
             var bestscore = 50;
             var bestmatchid;
@@ -346,7 +341,7 @@
                 for (var j=0; j<10; j++){
                     score += Math.abs(data[i].scores[j]-newFriend.scores[j])
                 }
-                if (score < bestscore){
+                if (score < bestscore && data[i].photo){
                     bestscore = score;
                     bestmatchid = i;
                 }
@@ -355,6 +350,10 @@
             $("#matchphoto").attr("src",data[bestmatchid].photo)
             $("#friendmodal").modal("show")
         })
+        
+        $.post("/api/data", newFriend).then(function(data) {
+            console.log("survey.html", data);
+        });
     });
 </script>
 
